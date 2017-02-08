@@ -9,7 +9,7 @@
 <script type="text/javascript" src="theme/funciones.js"></script>
 <link rel="stylesheet" href="theme/Master.css" type="text/css">
 </head>
-<body onload="cargarGrafico()">
+<body>
 	<div>
 		<table>
 			<tbody>
