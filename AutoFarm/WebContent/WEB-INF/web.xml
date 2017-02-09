@@ -9,4 +9,23 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+	<servlet>
+		<description>
+			This is the description for the sample servlet
+		</description>
+		<display-name>ManagementSrvlt</display-name>
+		<icon>
+			<small-icon>icons/small.gif</small-icon>
+			<large-icon>icons/small.gif</large-icon>
+		</icon>
+		<servlet-name>ManagementSrvlt</servlet-name>
+		<servlet-class>com.pcf8591.raspberry.ManagementSrvlt</servlet-class>
+		<load-on-startup>1</load-on-startup>
+		<enabled>true</enabled>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ManagementSrvlt</servlet-name>
+		<url-pattern>/Manager</url-pattern>
+	</servlet-mapping>
 </web-app>

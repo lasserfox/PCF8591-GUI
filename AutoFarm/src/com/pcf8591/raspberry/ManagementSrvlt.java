@@ -9,10 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * Servlet implementation class ManagementSrvlt
- */
-@WebServlet("/ManagementSrvlt")
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.i2c.I2CBus;
+import com.pi4j.io.i2c.I2CDevice;
+import com.pi4j.io.i2c.I2CFactory;
+
 public class ManagementSrvlt extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -37,26 +39,47 @@ public class ManagementSrvlt extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response){
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) {
 		doAction(request, response);
 	}
 
-	private void doAction(HttpServletRequest request,HttpServletResponse response) {
+	private void doAction(HttpServletRequest request,
+			HttpServletResponse response) {
 		try {
-			System.out.println("Entrando al servlet");
-//			String cmdOpt = request.getParameter("cmdOpt").toString();
+			String cmdOpt = request.getParameter("cmdOpt").toString();
+			
+			if ("leer".equalsIgnoreCase(cmdOpt)){
+				int canal = new Integer(request.getParameter("canal").toString()).intValue();
+				int x = leerData(canal);
 
-			String resp = "ObtenerDatos";
-			response.setContentType("text/plain");
-			response.setContentLength(resp.length());
-			PrintWriter out = response.getWriter();
-			out.println(resp);
-			out.close();
-			out.flush();
+				String resp = new Integer(x).toString();
+				response.setContentType("text/plain");
+				response.setContentLength(resp.length());
+				PrintWriter out = response.getWriter();
+				out.println(resp);
+				out.close();
+				out.flush();
+				
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private int leerData(int canal) {
+		int result = 0;
+		try {
+			final I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
+			I2CDevice initDevice = bus.getDevice(0x48);
+			initDevice.write(0x48,(byte) 0);
+			System.out.println(initDevice.read(0x48));
+			result = initDevice.read(0x48);
+		} catch (Exception e) {
+		}
+		return result;
 	}
 
 }

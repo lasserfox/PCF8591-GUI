@@ -5,9 +5,15 @@ $(document).ready(function(){
     // modo que esta seleccionada.
 	cargarGrafico();
 	
-	//res=invocarAjax("ManagementSrvlt?cmdOpt=cargarInstancias");
-	res=invocarUrl("/ManagementSrvlt");
-	//alert(res);
+	
+	res=invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=0");
+	alert (res);
+	res=invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=1");
+	alert (res);
+	res=invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=2");
+	alert (res);
+	res=invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=3");
+	alert (res);
 	
     $("#btnRefrescar").click(function(){
     	var instancia=$("#InstanciaWas option:selected" ).text();
@@ -20,20 +26,6 @@ $(document).ready(function(){
     });
 });
 
-
-
-function invocarUrl(url){
-	var result = null;
-	$.post(url,{
-		parama:"cmdOpt",
-		paramb:"value2"},
-		function(data, status){
-			alert("Data: " + data + "\nStatus: " + status);
-		});
-}
-
-
-
 function invocarAjax(url){
 	var result=null;	
 		$.ajax({
@@ -41,8 +33,8 @@ function invocarAjax(url){
 		    type:'POST',
 		    async: false,
 		    error: function(){},
-		    success: function(data,status,xhr){alert("a")},
-		    complete: function(xhr,status){alert(xhr)}
+		    success: function(data,status,xhr){result=data},
+		    complete: function(xhr,status){}
 		});
 		return result;
 	}
