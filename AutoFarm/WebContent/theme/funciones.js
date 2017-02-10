@@ -3,17 +3,15 @@ $(document).ready(function(){
     // cambia el color de la pesta�a y aumenta el padding para que tape el  
     // borde superior del contenido que esta juesto debajo y se vea de este 
     // modo que esta seleccionada.
-	cargarGrafico();
 	
+	var luz=parseInt(invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=0"));
+	var hum=parseInt(invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=1"));
+	var temp=parseInt(invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=2"));
+	var otro=parseInt(invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=3"));
 	
-	res=invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=0");
-	alert (res);
-	res=invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=1");
-	alert (res);
-	res=invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=2");
-	alert (res);
-	res=invocarAjax("/AutoFarm/Manager?cmdOpt=leer&canal=3");
-	alert (res);
+	var data = [{ label: "Luz", y: luz },{ label: "Humedad", y: hum },{ label: "Temperatura", y: temp },];
+	
+	cargarGrafico("titulo","column",data);
 	
     $("#btnRefrescar").click(function(){
     	var instancia=$("#InstanciaWas option:selected" ).text();
@@ -42,22 +40,17 @@ function invocarAjax(url){
 
 
 
-function cargarGrafico(datos) {
-
+function cargarGrafico(titulo,tipo,datos) {
 //Better to construct options first and then pass it as a parameter
 	var options = {
 		title: {
-			text: "Column Chart using jQuery Plugin"
+			text: titulo
 		},
                 animationEnabled: true,
 		data: [
 		{
-			type: "column", //change it to line, area, bar, pie, etc
-			dataPoints: [
-				{ label: "Luz", y: 10 },
-				{ label: "Humedad", y: 11 },
-				{ label: "Temperatura", y: 14 },
-			]
+			type: tipo, //change it to line, area, bar, pie, etc
+			dataPoints: datos
 		}
 		]
 	};

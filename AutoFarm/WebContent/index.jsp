@@ -50,7 +50,7 @@
 					<td></td>
 					<td></td>
 					<td></td>
-					<td colspan="4"><div id="chartContainer" style="height: 300px; width: 100%;"></div></td>
+					<td colspan="4"><div id="chartContainer" style="height: 50%; width: 50%;"></div></td>
 					<td></td>
 					<td></td>
 					<td></td>
