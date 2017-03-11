@@ -1,7 +1,14 @@
 package com.pcf8591.raspberry;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.stream.Stream;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,6 +21,7 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
+import com.sun.jmx.snmp.Timestamp;
 
 public class ManagementSrvlt extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -57,8 +65,23 @@ public class ManagementSrvlt extends HttpServlet {
 				out.println(resp);
 				out.close();
 				out.flush();
-
+			} else if ("leerHistorico".equalsIgnoreCase(cmdOpt)){
+	
+				String escala = request.getParameter("escala").toString();
+				int rango = new Integer(request.getParameter("rango").toString()).intValue();
+				Path path = Paths.get("/root/datos.txt");
+				
+				String result = new String(Files.readAllBytes(path));
+				System.out.println(result);
+				response.setContentType("text/plain");
+				response.setContentLength(result.length());
+				PrintWriter out = response.getWriter();
+				out.println(result);
+				out.close();
+				out.flush();
 			}
+			
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -70,13 +93,26 @@ public class ManagementSrvlt extends HttpServlet {
 		int result = 0;
 		try {
 			result=(int)(Math.random()*255);	
-//			final I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
-//			I2CDevice initDevice = bus.getDevice(0x48);
-//			initDevice.write(0x48, (byte) 0);
+			final I2CBus bus = I2CFactory.getInstance(I2CBus.BUS_1);
+			I2CDevice initDevice = bus.getDevice(0x48);
+			initDevice.write(0x48, (byte) 0);
 //			System.out.println(initDevice.read(0x48));
-//			result = initDevice.read(0x48);
+			result = initDevice.read(0x48+canal);
 		} catch (Exception e) {}
 		return result;
 	}
+
+//	private void dbWrite(int canal, int valor) {
+//		Path path = Paths.get("farmData.txt");
+//		try (BufferedWriter writer = Files.newBufferedWriter(path)) 
+//		{
+//			Date fechaLectura = GregorianCalendar.getInstance().getTime();
+//		    writer.write(fechaLectura + " - " + canal + " - " + valor + "\n");
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//	}
 
 }

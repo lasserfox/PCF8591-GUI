@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="AutoFarm">
+	<property environment="env" />
+	<property name="ECLIPSE_HOME" value="../../../../../Applications/jee-neon/Eclipse.app/Contents/Eclipse/" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.8" />
+	<property name="source" value="1.8" />
+	<path id="Web App Libraries.libraryclasspath">
+		<pathelement location="WebContent/WEB-INF/lib/catalina-ant.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/junit.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/pi4j-core.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/pi4j-device.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/pi4j-gpio-extension.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/pi4j-service.jar" />
+	</path>
+	<path id="EAR Libraries.libraryclasspath" />
+	<path id="Apache Tomcat v7.0 [Apache Tomcat v7.0].libraryclasspath">
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/annotations-api.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/catalina-ant.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/catalina-ha.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/catalina-tribes.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/catalina.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/ecj-4.4.2.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/el-api.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/jasper-el.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/jasper.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/jsp-api.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/servlet-api.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat-api.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat-coyote.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat-dbcp.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat-i18n-es.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat-i18n-fr.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat-i18n-ja.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat-jdbc.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat-util.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/tomcat7-websocket.jar" />
+		<pathelement location="../../../Downloads/apache-tomcat-7.0.75/lib/websocket-api.jar" />
+	</path>
+	<path id="AutoFarm.classpath">
+		<pathelement location="WebContent/WEB-INF/classes" />
+		<path refid="Web App Libraries.libraryclasspath" />
+		<path refid="EAR Libraries.libraryclasspath" />
+		<path refid="Apache Tomcat v7.0 [Apache Tomcat v7.0].libraryclasspath" />
+	</path>
+	<target name="init">
+		<mkdir dir="WebContent/WEB-INF/classes" />
+		<copy includeemptydirs="false" todir="WebContent/WEB-INF/classes">
+			<fileset dir="src">
+				<exclude name="**/*.launch" />
+				<exclude name="**/*.xtend" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<copy includeemptydirs="false" todir="WebContent/WEB-INF/classes">
+			<fileset dir=".apt_generated">
+				<exclude name="**/*.launch" />
+				<exclude name="**/*.xtend" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="clean">
+		<delete dir="WebContent/WEB-INF/classes" />
+	</target>
+	<target depends="clean" name="cleanall" />
+	<target depends="build-subprojects,build-project" name="build" />
+	<target name="build-subprojects" />
+	<target depends="init" name="build-project">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<javac debug="true" debuglevel="${debuglevel}" destdir="WebContent/WEB-INF/classes" includeantruntime="false" source="${source}" target="${target}">
+			<src path="src" />
+			<src path=".apt_generated" />
+			<classpath refid="AutoFarm.classpath" />
+		</javac>
+	</target>
+	<target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects" />
+	<target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+		<copy todir="${ant.library.dir}">
+			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar" />
+		</copy>
+		<unzip dest="${ant.library.dir}">
+			<patternset includes="jdtCompilerAdapter.jar" />
+			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar" />
+		</unzip>
+	</target>
+	<target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+		<antcall target="build" />
+	</target>
+
+	<war destfile="AutoFarm.war" webxml="WebContent/WEB-INF/web.xml">
+		<fileset dir="WebContent">
+			<include name="**/*.*" />
+		</fileset>
+		<lib dir="WebContent/WEB-INF/lib">
+			<exclude name="portlet.jar" />
+		</lib>
+	</war>
+	<path id="catalina-ant-classpath">
+	<!-- We need the Catalina jars for Tomcat -->
+	<!--  * for other app servers - check the docs -->
+	   <fileset dir="${appserver.lib}">
+	      <include name="catalina-ant.jar"/>
+	   </fileset>
+	</path>
+	
+	
+
+	<target name="reload" description="Reload application in Tomcat">
+	   <reload url="http://lasser.ddns.net:8080/text/" username="tomcat"
+	      password="p1rul022" path="/AautoFarm"/>
+	</target>
+
+</project>
